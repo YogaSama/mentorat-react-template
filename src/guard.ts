@@ -1,13 +1,23 @@
 /* !!! A NE PAS SUPPRIMER !!! */
 
-const nativeFetch = window.fetch;
+if (window.fetch) {
+  const ONE_SECOND_IN_MS = 1000;
+  const MAX_CALL_THRESHOLD_PER_SECOND = 10;
 
-let callCount = 0;
-const MAX_CALL_THRESHOLD = 5;
+  let callCount = 0;
 
-window.fetch = (input, init) => {
-  if (callCount++ > MAX_CALL_THRESHOLD) {
-    throw new Error(`Number of calls exceeds the tolerance threshold.`);
-  }
-  return nativeFetch.call(window, input, init);
-};
+  setInterval(() => {
+    if (callCount > 0) {
+      callCount = 0;
+    }
+  }, ONE_SECOND_IN_MS);
+
+  const nativeFetch = window.fetch;
+
+  window.fetch = (input, init) => {
+    if (callCount++ > MAX_CALL_THRESHOLD_PER_SECOND) {
+      throw new Error(`Max number of calls per second exceeds.`);
+    }
+    return nativeFetch.call(window, input, init);
+  };
+}
