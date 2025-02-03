@@ -2,4 +2,5 @@ import 'normalize.css';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 
-createRoot(document.getElementById('root')!).render(<App />);
+const rootElement = document.getElementById('root')!;
+createRoot(rootElement).render(<App />);
