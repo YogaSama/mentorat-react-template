@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { NamedAPIResource, NamedAPIResourceList } from 'pokemon';
+import PokemonCard from './PokemonCard';
 
 const DEFAULT_LIMIT = 9;
 
@@ -26,7 +27,9 @@ function App() {
       <main className="main">
         <ul className="grid">
           {pokemons.map((pokemon) => (
-            <li key={pokemon.name}>{pokemon.name}</li>
+            <li key={pokemon.name}>
+              <PokemonCard name={pokemon.name} />
+            </li>
           ))}
         </ul>
         <button className="show-more" onClick={handleShowMoreClick}>
