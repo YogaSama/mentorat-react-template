@@ -2,6 +2,13 @@ import './App.css';
 
 function App() {
   const pokemons = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+  const handleShowMoreClick: React.MouseEventHandler<HTMLButtonElement> = (
+    event
+  ) => {
+    console.log('Show more click !', event.target);
+  };
+
   return (
     <>
       <header className="header">Pokedex</header>
@@ -11,7 +18,9 @@ function App() {
             <li key={pokemon}>Pokemon {pokemon}</li>
           ))}
         </ul>
-        <button className="show-more">Afficher plus</button>
+        <button className="show-more" onClick={handleShowMoreClick}>
+          Afficher plus
+        </button>
       </main>
     </>
   );
