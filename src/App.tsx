@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { NamedAPIResource, NamedAPIResourceList } from 'pokemon';
 
@@ -14,11 +14,13 @@ function App() {
     // ]);
   };
 
-  fetch('https://pokeapi.co/api/v2/pokemon/?limit=9&offset=0')
-    .then((response) => response.json())
-    .then((response: NamedAPIResourceList) => {
-      setPokemons(response.results);
-    });
+  useEffect(() => {
+    fetch('https://pokeapi.co/api/v2/pokemon/?limit=9&offset=0')
+      .then((response) => response.json())
+      .then((response: NamedAPIResourceList) => {
+        setPokemons(response.results);
+      });
+  }, []);
 
   return (
     <>
