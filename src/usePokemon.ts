@@ -1,7 +1,7 @@
 import { Pokemon } from 'pokenode-ts';
 import { useEffect, useState } from 'react';
 
-function usePokemon(name: string): [Pokemon | null, boolean, unknown] {
+function usePokemon(name: string): [Pokemon | null, unknown, boolean] {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown | null>(null);
@@ -23,7 +23,7 @@ function usePokemon(name: string): [Pokemon | null, boolean, unknown] {
       });
   }, [name]);
 
-  return [pokemon, loading, error];
+  return [pokemon, error, loading];
 }
 
 export default usePokemon;

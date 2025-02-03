@@ -1,39 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import PokemonCard from './PokemonCard';
-import { NamedAPIResource, NamedAPIResourceList } from 'pokenode-ts';
+import usePokemons from './usePokemons';
 
 const DEFAULT_LIMIT = 9;
 
 function App() {
-  const [pokemons, setPokemons] = useState<NamedAPIResource[]>([]);
   const [limit, setLimit] = useState<number>(DEFAULT_LIMIT);
+  const [pokemons, error, loading] = usePokemons(limit, 0);
 
   const handleShowMoreClick = () => {
     setLimit((limit) => limit + DEFAULT_LIMIT);
   };
 
-  useEffect(() => {
-    fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=0`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((response: NamedAPIResourceList) => {
-        setPokemons(response.results);
-      });
-  }, [limit]);
-
   return (
     <>
       <header className="header">Pokedex</header>
       <main className="main">
-        <ul className="grid">
-          {pokemons.map((pokemon) => (
-            <li key={pokemon.name}>
-              <PokemonCard name={pokemon.name} />
-            </li>
-          ))}
-        </ul>
+        {loading && 'Loading ...'}
+        {error != null && 'Une erreur est survenue !'}
+        {pokemons != null && (
+          <ul className="grid">
+            {pokemons.map((pokemon) => (
+              <li key={pokemon.name}>
+                <PokemonCard name={pokemon.name} />
+              </li>
+            ))}
+          </ul>
+        )}
         <button className="show-more" onClick={handleShowMoreClick}>
           Afficher plus
         </button>

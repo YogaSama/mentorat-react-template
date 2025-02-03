@@ -6,7 +6,7 @@ interface PokemonCardProps {
 
 function PokemonCard(props: PokemonCardProps) {
   const name = props.name;
-  const [pokemon, loading, error] = usePokemon(name);
+  const [pokemon, error, loading] = usePokemon(name);
 
   if (loading) {
     return `${name} ...`;
