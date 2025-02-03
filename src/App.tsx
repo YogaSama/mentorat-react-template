@@ -13,6 +13,12 @@ function App() {
     ]);
   };
 
+  fetch('https://pokeapi.co/api/v2/pokemon/?limit=9&offset=0')
+    .then((response) => response.json())
+    .then((response) => {
+      console.log(response);
+    });
+
   return (
     <>
       <header className="header">Pokedex</header>
