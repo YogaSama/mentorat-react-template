@@ -1,20 +1,15 @@
 import './App.css';
 
 function App() {
+  const pokemons = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   return (
     <>
       <header className="header">Pokedex</header>
       <main className="main">
         <ul className="grid">
-          <li>Pokemon 1</li>
-          <li>Pokemon 2</li>
-          <li>Pokemon 3</li>
-          <li>Pokemon 4</li>
-          <li>Pokemon 5</li>
-          <li>Pokemon 6</li>
-          <li>Pokemon 7</li>
-          <li>Pokemon 8</li>
-          <li>Pokemon 9</li>
+          {pokemons.map((pokemon) => (
+            <li key={pokemon}>Pokemon {pokemon}</li>
+          ))}
         </ul>
         <button className="show-more">Afficher plus</button>
       </main>
