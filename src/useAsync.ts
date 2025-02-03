@@ -1,37 +1,43 @@
-import { DependencyList, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-type Data<T> = T | null;
-type Error = unknown;
-type Loading = boolean;
-
-interface AsyncResult<T> {
-  data: Data<T>;
-  error: Error;
-  loading: Loading;
+interface AsyncOptions {
+  resetOnLoad?: boolean;
 }
 
 export default function useAsync<T>(
   asyncFn: (signal: AbortSignal) => Promise<T>,
-  deps: DependencyList
-): [Data<T>, Error, Loading] {
-  const [result, setResult] = useState<AsyncResult<T>>({
-    data: null,
-    error: null,
-    loading: true,
-  });
+  options?: AsyncOptions
+): [T | null, unknown, boolean] {
+  const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState<unknown>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const abortController = new AbortController();
-    setResult({ data: null, error: null, loading: true });
+    setLoading(true);
+    if (options?.resetOnLoad) {
+      setData(null);
+      setError(null);
+    }
     asyncFn(abortController.signal).then(
-      (data) => setResult({ data, error: null, loading: false }),
-      (error) => setResult({ data: null, error, loading: false })
+      (data) => {
+        setData(data);
+        setError(null);
+        setLoading(false);
+      },
+      (error) => {
+        if (!abortController.signal.aborted) {
+          setData(null);
+          setError(error);
+          setLoading(false);
+        }
+      }
     );
 
     return () => {
       abortController.abort();
     };
-  }, deps);
+  }, [asyncFn, options?.resetOnLoad]);
 
-  return [result.data, result.error, result.loading];
+  return [data, error, loading];
 }

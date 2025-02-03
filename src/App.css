@@ -14,12 +14,11 @@
   grid-template-columns: auto auto auto;
   margin: 0;
   padding: 0;
+  gap: 1em;
 }
 
 .grid li {
-  margin: 1em;
   list-style: none;
-  padding: 5px;
 }
 
 .show-more {

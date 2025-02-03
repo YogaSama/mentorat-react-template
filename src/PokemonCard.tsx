@@ -1,3 +1,4 @@
+import './PokemonCard.css';
 import usePokemon from './usePokemon';
 
 interface PokemonCardProps {
@@ -9,7 +10,7 @@ function PokemonCard(props: PokemonCardProps) {
   const [pokemon, error, loading] = usePokemon(name);
 
   if (loading) {
-    return `${name} ...`;
+    return `Loading ${name}`;
   }
 
   if (error != null) {
@@ -17,10 +18,10 @@ function PokemonCard(props: PokemonCardProps) {
   }
 
   return (
-    <>
+    <div className="pokemon-card">
       <img alt={name} src={pokemon!.sprites.front_default!} />
-      {name}#{pokemon!.id}
-    </>
+      <span className="pokemon-name">{name}</span> #{pokemon!.id ?? '-'}
+    </div>
   );
 }
 

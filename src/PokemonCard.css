@@ -1,0 +1,8 @@
+.pokemon-card {
+  display: flex;
+  align-items: center;
+}
+
+.pokemon-card .pokemon-name {
+  font-weight: bold;
+}

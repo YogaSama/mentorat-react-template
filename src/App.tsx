@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import './App.css';
+import { useState } from 'react';
 import PokemonCard from './PokemonCard';
 import usePokemons from './usePokemons';
 
@@ -17,7 +17,6 @@ function App() {
     <>
       <header className="header">Pokedex</header>
       <main className="main">
-        {loading && 'Loading ...'}
         {error != null && 'Une erreur est survenue !'}
         {pokemons != null && (
           <ul className="grid">
@@ -28,8 +27,12 @@ function App() {
             ))}
           </ul>
         )}
-        <button className="show-more" onClick={handleShowMoreClick}>
-          Afficher plus
+        <button
+          className="show-more"
+          onClick={handleShowMoreClick}
+          disabled={loading}
+        >
+          {loading ? 'Loading ...' : 'Afficher plus'}
         </button>
       </main>
     </>
