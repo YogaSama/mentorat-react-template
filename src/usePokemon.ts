@@ -1,29 +1,11 @@
 import { Pokemon } from 'pokenode-ts';
-import { useEffect, useState } from 'react';
+import useAsync from './useAsync';
 
-function usePokemon(name: string): [Pokemon | null, unknown, boolean] {
-  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<unknown | null>(null);
-
-  useEffect(() => {
-    fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((pokemon) => {
-        setLoading(false);
-        setPokemon(pokemon);
-        setError(null);
-      })
-      .catch((err) => {
-        setLoading(false);
-        setPokemon(null);
-        setError(err);
-      });
+function usePokemon(name: string) {
+  return useAsync<Pokemon>(async () => {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    return response.json();
   }, [name]);
-
-  return [pokemon, error, loading];
 }
 
 export default usePokemon;
