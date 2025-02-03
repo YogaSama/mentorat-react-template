@@ -1,12 +1,18 @@
+import { useState } from 'react';
 import './App.css';
 
 function App() {
-  const pokemons = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const [pokemons, setPokemons] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
-  const handleShowMoreClick: React.MouseEventHandler<HTMLButtonElement> = (
-    event
-  ) => {
-    console.log('Show more click !', event.target);
+  const handleShowMoreClick: React.MouseEventHandler<
+    HTMLButtonElement
+  > = () => {
+    setPokemons((prev) => [
+      ...prev,
+      prev.length + 1,
+      prev.length + 2,
+      prev.length + 3,
+    ]);
   };
 
   return (
