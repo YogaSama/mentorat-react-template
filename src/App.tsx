@@ -2,25 +2,23 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { NamedAPIResource, NamedAPIResourceList } from 'pokemon';
 
+const DEFAULT_LIMIT = 9;
+
 function App() {
   const [pokemons, setPokemons] = useState<NamedAPIResource[]>([]);
+  const [limit, setLimit] = useState<number>(DEFAULT_LIMIT);
 
   const handleShowMoreClick = () => {
-    // setPokemons((prev) => [
-    //   ...prev,
-    //   prev.length + 1,
-    //   prev.length + 2,
-    //   prev.length + 3,
-    // ]);
+    setLimit((limit) => limit + DEFAULT_LIMIT);
   };
 
   useEffect(() => {
-    fetch('https://pokeapi.co/api/v2/pokemon/?limit=9&offset=0')
+    fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=0`)
       .then((response) => response.json())
       .then((response: NamedAPIResourceList) => {
         setPokemons(response.results);
       });
-  }, []);
+  }, [limit]);
 
   return (
     <>
