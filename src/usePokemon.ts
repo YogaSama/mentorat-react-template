@@ -1,8 +1,10 @@
 import { Pokemon } from 'pokenode-ts';
 import { useEffect, useState } from 'react';
 
-function usePokemon(name: string): Pokemon | null {
+function usePokemon(name: string): [Pokemon | null, boolean, unknown] {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<unknown | null>(null);
 
   useEffect(() => {
     fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
@@ -10,11 +12,18 @@ function usePokemon(name: string): Pokemon | null {
         return response.json();
       })
       .then((pokemon) => {
+        setLoading(false);
         setPokemon(pokemon);
+        setError(null);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setPokemon(null);
+        setError(err);
       });
   }, [name]);
 
-  return pokemon;
+  return [pokemon, loading, error];
 }
 
 export default usePokemon;

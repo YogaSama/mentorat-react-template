@@ -6,11 +6,20 @@ interface PokemonCardProps {
 
 function PokemonCard(props: PokemonCardProps) {
   const name = props.name;
-  const pokemon = usePokemon(name);
+  const [pokemon, loading, error] = usePokemon(name);
+
+  if (loading) {
+    return `${name} ...`;
+  }
+
+  if (error != null) {
+    return `Impossible de charger '${name}'`;
+  }
 
   return (
     <>
-      {name} #{pokemon?.id ?? '-'}
+      <img alt={name} src={pokemon!.sprites.front_default!} />
+      {name}#{pokemon!.id}
     </>
   );
 }
