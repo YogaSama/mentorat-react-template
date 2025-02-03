@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { NamedAPIResource, NamedAPIResourceList } from 'pokemon';
 import PokemonCard from './PokemonCard';
+import { NamedAPIResource, NamedAPIResourceList } from 'pokenode-ts';
 
 const DEFAULT_LIMIT = 9;
 
@@ -15,7 +15,9 @@ function App() {
 
   useEffect(() => {
     fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=0`)
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json();
+      })
       .then((response: NamedAPIResourceList) => {
         setPokemons(response.results);
       });
