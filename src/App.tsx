@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import PokemonCard from './PokemonCard';
 import usePokemons from './usePokemons';
 import { useShiny } from './ShinyContext';
+import ErrorBoundary from './ErrorBoundary';
 
 const DEFAULT_LIMIT = 9;
 
@@ -42,7 +43,9 @@ function App() {
         <ul className="grid">
           {pokemons?.map((pokemon) => (
             <li key={pokemon.name}>
-              <PokemonCard name={pokemon.name} />
+              <ErrorBoundary fallback={<div>{pokemon.name}</div>}>
+                <PokemonCard name={pokemon.name} />
+              </ErrorBoundary>
             </li>
           ))}
         </ul>

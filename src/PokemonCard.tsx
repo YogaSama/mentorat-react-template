@@ -16,7 +16,7 @@ function PokemonCard(props: PokemonCardProps) {
   }
 
   if (error != null) {
-    return `Impossible de charger '${name}'`;
+    throw new Error(`Impossible de charger '${name}'`);
   }
 
   return (
