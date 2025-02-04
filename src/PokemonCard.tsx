@@ -20,7 +20,7 @@ function PokemonCard(props: PokemonCardProps) {
   return (
     <div className="pokemon-card">
       <img alt={name} src={pokemon!.sprites.front_default!} />
-      <span className="pokemon-name">{name}</span> #{pokemon!.id ?? '-'}
+      <span className="pokemon-name">{name}</span> #{pokemon!.id}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PokemonCard from './PokemonCard';
 import usePokemons from './usePokemons';
 
@@ -9,6 +9,7 @@ function App() {
   const [limit, setLimit] = useState<number>(DEFAULT_LIMIT);
   const [pokemons, error, loading] = usePokemons(limit, 0);
   const [filter, setFilter] = useState<string>('');
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleShowMoreClick = () => {
     setLimit((limit) => limit + DEFAULT_LIMIT);
@@ -20,21 +21,24 @@ function App() {
     setFilter(event.target.value.toLowerCase());
   };
 
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
   return (
     <>
       <header className="header">Pokedex</header>
       <main className="main">
         {error != null && 'Une erreur est survenue !'}
-        <form className="filters">
-          <label htmlFor="filter-input">Filter</label>
+        <div>
           <input
-            id="filter-input"
+            ref={inputRef}
             type="text"
-            placeholder="pikachu"
+            placeholder="Rechercher un pokemon ..."
             value={filter}
             onChange={handleFilterInputChange}
           />
-        </form>
+        </div>
         <ul className="grid">
           {pokemons?.map((pokemon) => (
             <li
