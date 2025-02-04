@@ -23,8 +23,8 @@ function App() {
   };
 
   useEffect(() => {
-    showMoreRef.current?.focus();
-  }, []);
+    showMoreRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [pokemons]);
 
   return (
     <>

@@ -10,6 +10,7 @@ function usePokemons(limit: number, offset: number) {
     const result: NamedAPIResourceList = await response.json();
     return result.results;
   }, [limit, offset]);
+
   return useAsync<NamedAPIResource[]>(callback);
 }
 

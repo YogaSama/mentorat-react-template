@@ -1,6 +1,8 @@
-import React, { DependencyList, useContext, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 
-const buildValue = (): Map<string, () => unknown> => new Map();
+function buildValue() {
+  return new Map<string, () => unknown>();
+}
 
 export const SyncContext = React.createContext(buildValue());
 
@@ -28,12 +30,15 @@ function getOrCreateFromCache<T>(
     });
   }
 
-  return cache.get(key)?.() as T;
+  return cache.get(key)!() as T;
 }
 
-export function useSync<T>(asyncFn: () => Promise<T>, deps: DependencyList): T {
-  const cache = useContext(SyncContext);
-  const key = deps.join(',');
+interface UseSyncParams<T> {
+  key: string;
+  query: () => Promise<T>;
+}
 
-  return getOrCreateFromCache(asyncFn, cache, key);
+export function useSync<T>(params: UseSyncParams<T>): T {
+  const cache = useContext(SyncContext);
+  return getOrCreateFromCache(params.query, cache, params.key);
 }
