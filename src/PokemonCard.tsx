@@ -1,4 +1,5 @@
 import './PokemonCard.css';
+import { useShiny } from './ShinyContext';
 import usePokemon from './usePokemon';
 
 interface PokemonCardProps {
@@ -7,6 +8,7 @@ interface PokemonCardProps {
 
 function PokemonCard(props: PokemonCardProps) {
   const name = props.name;
+  const { shiny } = useShiny();
   const [pokemon, error, loading] = usePokemon(name);
 
   if (loading) {
@@ -19,7 +21,10 @@ function PokemonCard(props: PokemonCardProps) {
 
   return (
     <div className="pokemon-card">
-      <img alt={name} src={pokemon!.sprites.front_default!} />
+      <img
+        alt={name}
+        src={pokemon!.sprites[shiny ? 'front_shiny' : 'front_default']!}
+      />
       <span className="pokemon-name">{name}</span> #{pokemon!.id}
     </div>
   );

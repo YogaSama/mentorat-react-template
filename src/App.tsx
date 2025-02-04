@@ -2,27 +2,27 @@ import './App.css';
 import { useEffect, useRef, useState } from 'react';
 import PokemonCard from './PokemonCard';
 import usePokemons from './usePokemons';
+import { useShiny } from './ShinyContext';
 
 const DEFAULT_LIMIT = 9;
 
 function App() {
+  const { shiny, setShiny } = useShiny();
+
   const [limit, setLimit] = useState<number>(DEFAULT_LIMIT);
   const [pokemons, error, loading] = usePokemons(limit, 0);
-  const [filter, setFilter] = useState<string>('');
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const showMoreRef = useRef<HTMLButtonElement | null>(null);
 
   const handleShowMoreClick = () => {
     setLimit((limit) => limit + DEFAULT_LIMIT);
   };
 
-  const handleFilterInputChange: React.ChangeEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    setFilter(event.target.value.toLowerCase());
+  const handleShinyChange = () => {
+    setShiny(!shiny);
   };
 
   useEffect(() => {
-    inputRef.current?.focus();
+    showMoreRef.current?.focus();
   }, []);
 
   return (
@@ -31,25 +31,17 @@ function App() {
       <main className="main">
         {error != null && 'Une erreur est survenue !'}
         <div>
+          <label htmlFor="shiny-checkbox">Shiny</label>
           <input
-            ref={inputRef}
-            type="text"
-            placeholder="Rechercher un pokemon ..."
-            value={filter}
-            onChange={handleFilterInputChange}
+            id="shiny-checkbox"
+            type="checkbox"
+            checked={shiny}
+            onChange={handleShinyChange}
           />
         </div>
         <ul className="grid">
           {pokemons?.map((pokemon) => (
-            <li
-              key={pokemon.name}
-              style={{
-                display:
-                  filter === '' || pokemon.name.includes(filter)
-                    ? 'block'
-                    : 'none',
-              }}
-            >
+            <li key={pokemon.name}>
               <PokemonCard name={pokemon.name} />
             </li>
           ))}
@@ -58,6 +50,7 @@ function App() {
           className="show-more"
           onClick={handleShowMoreClick}
           disabled={loading}
+          ref={showMoreRef}
         >
           {loading ? 'Loading ...' : 'Afficher plus'}
         </button>
