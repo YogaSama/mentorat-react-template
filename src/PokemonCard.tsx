@@ -9,15 +9,7 @@ interface PokemonCardProps {
 function PokemonCard(props: PokemonCardProps) {
   const name = props.name;
   const { shiny } = useShiny();
-  const [pokemon, error, loading] = usePokemon(name);
-
-  if (loading) {
-    return `Loading ${name}`;
-  }
-
-  if (error != null) {
-    throw new Error(`Impossible de charger '${name}'`);
-  }
+  const pokemon = usePokemon(name);
 
   return (
     <div className="pokemon-card">

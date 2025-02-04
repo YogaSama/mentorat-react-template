@@ -1,5 +1,5 @@
 import './App.css';
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import PokemonCard from './PokemonCard';
 import usePokemons from './usePokemons';
 import { useShiny } from './ShinyContext';
@@ -44,7 +44,9 @@ function App() {
           {pokemons?.map((pokemon) => (
             <li key={pokemon.name}>
               <ErrorBoundary fallback={<div>{pokemon.name}</div>}>
-                <PokemonCard name={pokemon.name} />
+                <Suspense fallback="Loading...">
+                  <PokemonCard name={pokemon.name} />
+                </Suspense>
               </ErrorBoundary>
             </li>
           ))}
