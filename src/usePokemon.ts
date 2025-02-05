@@ -1,10 +1,10 @@
 import { getPokemon } from './pokemonApi';
-import useAsync from './useAsync';
+import useSync from './useSync';
 
 function usePokemon(name: string) {
-  return useAsync({
+  return useSync({
     query: () => getPokemon(name),
-    deps: [name],
+    key: ['getPokemon', name],
   });
 }
 
