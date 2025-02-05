@@ -1,14 +1,18 @@
 interface PokemonItemProps {
-  id: number;
+  id?: number;
   name: string;
-  url: string;
+  url?: string;
 }
 
 function PokemonItem(props: PokemonItemProps) {
   return (
     <div className="item">
-      #{props.id} {props.name}
-      <img className="icon" src={props.url} />
+      #{props.id ?? '-'} {props.name}
+      {props.url ? (
+        <img className="icon" src={props.url} />
+      ) : (
+        <div className="icon" />
+      )}
     </div>
   );
 }
