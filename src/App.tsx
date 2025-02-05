@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import PokemonItem from './PokemonItem';
 
 function createPokemon(id: number) {
@@ -8,18 +9,28 @@ function createPokemon(id: number) {
   };
 }
 
-function createPokemons(count: number) {
-  return [...new Array(count)].map((v, i) => createPokemon(i + 1));
+function createPokemons(offset: number, count: number) {
+  return [...new Array(count)].map((v, i) => createPokemon(offset + i));
 }
 
 function App() {
-  const pokemons = createPokemons(3);
+  const [pokemons, setPokemons] = useState(createPokemons(1, 3));
   return (
     <>
       <header className="header">Pokedex</header>
       <main className="main">
         <div className="tools">
-          <button className="show-more">Voir plus</button>
+          <button
+            className="show-more"
+            onClick={() => {
+              setPokemons((previous) => [
+                ...previous,
+                ...createPokemons(previous.length + 1, 3),
+              ]);
+            }}
+          >
+            Voir plus
+          </button>
           <div className="shiny">
             <label htmlFor="shiny-checkbox">shiny</label>
             <input id="shiny-checkbox" type="checkbox" />
