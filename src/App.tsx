@@ -38,12 +38,7 @@ function App() {
         </div>
         <div className="list" ref={listRef}>
           {pokemons.map((pokemon) => (
-            <PokemonItem
-              key={pokemon.name}
-              id={0}
-              name={pokemon.name}
-              url={pokemon.name}
-            />
+            <PokemonItem key={pokemon.name} name={pokemon.name} />
           ))}
         </div>
       </main>
