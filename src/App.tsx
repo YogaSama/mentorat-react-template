@@ -4,6 +4,7 @@ import usePokemons from './usePokemons';
 
 function App() {
   const [limit, setLimit] = useState(3);
+  const [shiny, setShiny] = useState(false);
   const pokemons = usePokemons(limit);
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -26,7 +27,14 @@ function App() {
           </button>
           <div className="shiny">
             <label htmlFor="shiny-checkbox">shiny</label>
-            <input id="shiny-checkbox" type="checkbox" />
+            <input
+              id="shiny-checkbox"
+              type="checkbox"
+              checked={shiny}
+              onChange={() => {
+                setShiny(!shiny);
+              }}
+            />
           </div>
         </div>
         <div className="list" ref={listRef}>
