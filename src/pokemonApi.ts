@@ -1,4 +1,8 @@
-import type { NamedAPIResource, NamedAPIResourceList } from 'pokenode-ts';
+import type {
+  NamedAPIResource,
+  NamedAPIResourceList,
+  Pokemon,
+} from 'pokenode-ts';
 
 export async function getPokemons(
   limit: number,
@@ -9,4 +13,9 @@ export async function getPokemons(
   );
   const json: NamedAPIResourceList = await response.json();
   return json.results;
+}
+
+export async function getPokemon(name: string): Promise<Pokemon> {
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+  return response.json();
 }

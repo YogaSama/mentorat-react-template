@@ -1,15 +1,25 @@
+import { useEffect, useState } from 'react';
+import { getPokemon } from './pokemonApi';
+import { Pokemon } from 'pokenode-ts';
+
 interface PokemonItemProps {
-  id?: number;
   name: string;
-  url?: string;
 }
 
 function PokemonItem(props: PokemonItemProps) {
+  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
+
+  useEffect(() => {
+    getPokemon(props.name).then((v) => {
+      setPokemon(v);
+    });
+  }, [props.name]);
+
   return (
     <div className="item">
-      #{props.id ?? '-'} {props.name}
-      {props.url ? (
-        <img className="icon" src={props.url} />
+      #{pokemon?.id ?? '-'} {props.name}
+      {pokemon?.sprites.front_default ? (
+        <img className="icon" src={pokemon.sprites.front_default} />
       ) : (
         <div className="icon" />
       )}
