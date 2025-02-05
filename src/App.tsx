@@ -30,6 +30,15 @@ function App() {
           >
             {pokemonQuery.loading ? 'Loading...' : 'Voir plus'}
           </button>
+          <button
+            disabled={pokemonQuery.loading}
+            className="show-more"
+            onClick={() => {
+              setLimit((previous) => Math.max(3, previous - 3));
+            }}
+          >
+            {pokemonQuery.loading ? 'Loading...' : 'Voir moins'}
+          </button>
           <div className="shiny">
             <label htmlFor="shiny-checkbox">shiny</label>
             <input
