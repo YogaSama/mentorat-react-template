@@ -1,6 +1,19 @@
 import PokemonItem from './PokemonItem';
 
+function createPokemon(id: number) {
+  return {
+    id: id,
+    name: 'pokemon',
+    url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png',
+  };
+}
+
+function createPokemons(count: number) {
+  return [...new Array(count)].map((v, i) => createPokemon(i + 1));
+}
+
 function App() {
+  const pokemons = createPokemons(3);
   return (
     <>
       <header className="header">Pokedex</header>
@@ -13,21 +26,14 @@ function App() {
           </div>
         </div>
         <div className="list">
-          <PokemonItem
-            id={1}
-            name="pokemon"
-            url="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
-          />
-          <PokemonItem
-            id={2}
-            name="pokemon"
-            url="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
-          />
-          <PokemonItem
-            id={3}
-            name="pokemon"
-            url="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
-          />
+          {pokemons.map((pokemon) => (
+            <PokemonItem
+              key={pokemon.id}
+              id={pokemon.id}
+              name={pokemon.name}
+              url={pokemon.url}
+            />
+          ))}
         </div>
       </main>
     </>
