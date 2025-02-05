@@ -1,3 +1,5 @@
+import PokemonItem from './PokemonItem';
+
 function App() {
   return (
     <>
@@ -11,27 +13,21 @@ function App() {
           </div>
         </div>
         <div className="list">
-          <div className="item">
-            #1 pokemon
-            <img
-              className="icon"
-              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
-            />
-          </div>
-          <div className="item">
-            #2 pokemon
-            <img
-              className="icon"
-              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
-            />
-          </div>
-          <div className="item">
-            #3 pokemon
-            <img
-              className="icon"
-              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
-            />
-          </div>
+          <PokemonItem
+            id={1}
+            name="pokemon"
+            url="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+          />
+          <PokemonItem
+            id={2}
+            name="pokemon"
+            url="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+          />
+          <PokemonItem
+            id={3}
+            name="pokemon"
+            url="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+          />
         </div>
       </main>
     </>
