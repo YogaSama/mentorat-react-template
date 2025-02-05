@@ -43,7 +43,7 @@ function App() {
           </div>
         </div>
         <div className="list" ref={listRef}>
-          {pokemonQuery.data.map((pokemon) => (
+          {pokemonQuery.data!.map((pokemon) => (
             <PokemonItem key={pokemon.name} name={pokemon.name} />
           ))}
         </div>
