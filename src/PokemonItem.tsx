@@ -6,14 +6,9 @@ interface PokemonItemProps {
 }
 
 function PokemonItem(props: PokemonItemProps) {
-  const pokemonQuery = usePokemon(props.name);
+  const pokemon = usePokemon(props.name);
   const { shiny } = useShiny();
 
-  if (pokemonQuery.loading) {
-    return <div className="item">Loading ...</div>;
-  }
-
-  const pokemon = pokemonQuery.data!;
   return (
     <div className="item">
       #{pokemon.id} {props.name}

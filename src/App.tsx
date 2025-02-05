@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import PokemonItem from './PokemonItem';
 import usePokemons from './usePokemons';
 import { useShiny } from './ShinyProvider';
@@ -44,7 +44,12 @@ function App() {
         </div>
         <div className="list" ref={listRef}>
           {pokemonQuery.data!.map((pokemon) => (
-            <PokemonItem key={pokemon.name} name={pokemon.name} />
+            <Suspense
+              key={pokemon.name}
+              fallback={<div className="item">Loading ...</div>}
+            >
+              <PokemonItem name={pokemon.name} />
+            </Suspense>
           ))}
         </div>
       </main>
