@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PokemonItem from './PokemonItem';
 
 function createPokemon(id: number) {
@@ -15,6 +15,12 @@ function createPokemons(offset: number, count: number) {
 
 function App() {
   const [pokemons, setPokemons] = useState(createPokemons(1, 3));
+  const listRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
+  }, [pokemons]);
+
   return (
     <>
       <header className="header">Pokedex</header>
@@ -36,7 +42,7 @@ function App() {
             <input id="shiny-checkbox" type="checkbox" />
           </div>
         </div>
-        <div className="list">
+        <div className="list" ref={listRef}>
           {pokemons.map((pokemon) => (
             <PokemonItem
               key={pokemon.id}
