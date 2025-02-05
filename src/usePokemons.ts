@@ -3,15 +3,18 @@ import { useEffect, useState } from 'react';
 import { getPokemons } from './pokemonApi';
 
 function usePokemons(limit: number) {
-  const [pokemons, setPokemons] = useState<NamedAPIResource[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<NamedAPIResource[]>([]);
 
   useEffect(() => {
+    setLoading(true);
     getPokemons(limit, 0).then((result) => {
-      setPokemons(result);
+      setData(result);
+      setLoading(false);
     });
   }, [limit]);
 
-  return pokemons;
+  return { loading, data };
 }
 
 export default usePokemons;

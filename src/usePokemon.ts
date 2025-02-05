@@ -3,15 +3,18 @@ import { getPokemon } from './pokemonApi';
 import { Pokemon } from 'pokenode-ts';
 
 function usePokemon(name: string) {
-  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<Pokemon | null>(null);
 
   useEffect(() => {
+    setLoading(true);
     getPokemon(name).then((v) => {
-      setPokemon(v);
+      setData(v);
+      setLoading(false);
     });
   }, [name]);
 
-  return pokemon;
+  return { data, loading };
 }
 
 export default usePokemon;
