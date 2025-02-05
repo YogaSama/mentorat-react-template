@@ -39,7 +39,7 @@ function App() {
         </div>
         <div className="list" ref={listRef}>
           {pokemons.map((pokemon) => (
-            <PokemonItem key={pokemon.name} name={pokemon.name} />
+            <PokemonItem key={pokemon.name} name={pokemon.name} shiny={shiny} />
           ))}
         </div>
       </main>
