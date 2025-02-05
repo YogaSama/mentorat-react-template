@@ -51,14 +51,14 @@ body {
   gap: 4px;
 }
 
-.show-more {
+.show {
   border: none;
   box-shadow: var(--shadow);
   border-radius: var(--border-radius);
   padding: 4px 12px;
 }
 
-.show-more:hover {
+.show:hover {
   background-color: var(--secondary-color);
   border-radius: var(--border-radius);
 }
@@ -79,6 +79,7 @@ body {
   border-radius: var(--border-radius);
   padding: 4px;
   gap: 4px;
+  min-height: 50px;
 }
 
 .icon {
@@ -86,4 +87,12 @@ body {
   height: 3em;
   border-radius: var(--border-radius);
   background-color: var(--bg-color);
+}
+
+.error {
+  color: white;
+  padding: 4px 8px;
+  border: 1px solid rgb(192, 124, 124);
+  background-color: rgb(230, 58, 58);
+  border-radius: var(--border-radius);
 }
