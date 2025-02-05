@@ -1,22 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import PokemonItem from './PokemonItem';
-import { getPokemons } from './pokemonApi';
-import { NamedAPIResource } from 'pokenode-ts';
+import usePokemons from './usePokemons';
 
 function App() {
   const [limit, setLimit] = useState(3);
-  const [pokemons, setPokemons] = useState<NamedAPIResource[]>([]);
+  const pokemons = usePokemons(limit);
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
   }, [pokemons]);
-
-  useEffect(() => {
-    getPokemons(limit, 0).then((result) => {
-      setPokemons(result);
-    });
-  }, [limit]);
 
   return (
     <>
