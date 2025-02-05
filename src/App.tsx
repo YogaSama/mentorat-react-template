@@ -2,6 +2,7 @@ import { Suspense, useEffect, useRef, useState } from 'react';
 import PokemonItem from './PokemonItem';
 import usePokemons from './usePokemons';
 import { useShiny } from './ShinyProvider';
+import ErrorBoundary from './ErrorBoundary';
 
 function App() {
   const [limit, setLimit] = useState(3);
@@ -23,7 +24,7 @@ function App() {
         <div className="tools">
           <button
             disabled={pokemonQuery.loading}
-            className="show-more"
+            className="show"
             onClick={() => {
               setLimit((previous) => previous + 3);
             }}
@@ -32,7 +33,7 @@ function App() {
           </button>
           <button
             disabled={pokemonQuery.loading}
-            className="show-more"
+            className="show"
             onClick={() => {
               setLimit((previous) => Math.max(3, previous - 3));
             }}
@@ -51,16 +52,23 @@ function App() {
             />
           </div>
         </div>
-        <div className="list" ref={listRef}>
-          {pokemonQuery.data!.map((pokemon) => (
-            <Suspense
-              key={pokemon.name}
-              fallback={<div className="item">Loading ...</div>}
-            >
-              <PokemonItem name={pokemon.name} />
-            </Suspense>
-          ))}
-        </div>
+        {pokemonQuery.error != null && (
+          <div className="error">Chargement impossible du pokedex</div>
+        )}
+        {pokemonQuery.data != null && (
+          <div className="list" ref={listRef}>
+            {pokemonQuery.data.map((pokemon) => (
+              <ErrorBoundary
+                key={pokemon.name}
+                fallback={<div className="item error">{pokemon.name}</div>}
+              >
+                <Suspense fallback={<div className="item">Loading ...</div>}>
+                  <PokemonItem name={pokemon.name} />
+                </Suspense>
+              </ErrorBoundary>
+            ))}
+          </div>
+        )}
       </main>
     </>
   );
