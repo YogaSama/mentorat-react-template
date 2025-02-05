@@ -2,6 +2,7 @@ import usePokemon from './usePokemon';
 
 interface PokemonItemProps {
   name: string;
+  shiny: boolean;
 }
 
 function PokemonItem(props: PokemonItemProps) {
@@ -11,7 +12,10 @@ function PokemonItem(props: PokemonItemProps) {
     <div className="item">
       #{pokemon?.id ?? '-'} {props.name}
       {pokemon?.sprites.front_default ? (
-        <img className="icon" src={pokemon.sprites.front_default} />
+        <img
+          className="icon"
+          src={pokemon.sprites[props.shiny ? 'front_shiny' : 'front_default']!}
+        />
       ) : (
         <div className="icon" />
       )}
