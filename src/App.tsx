@@ -1,25 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import PokemonItem from './PokemonItem';
-
-function createPokemon(id: number) {
-  return {
-    id: id,
-    name: 'pokemon',
-    url: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png',
-  };
-}
-
-function createPokemons(offset: number, count: number) {
-  return [...new Array(count)].map((v, i) => createPokemon(offset + i));
-}
+import { getPokemons } from './pokemonApi';
+import { NamedAPIResource } from 'pokenode-ts';
 
 function App() {
-  const [pokemons, setPokemons] = useState(createPokemons(1, 3));
+  const [limit, setLimit] = useState(3);
+  const [pokemons, setPokemons] = useState<NamedAPIResource[]>([]);
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
   }, [pokemons]);
+
+  useEffect(() => {
+    getPokemons(limit, 0).then((result) => {
+      setPokemons(result);
+    });
+  }, [limit]);
 
   return (
     <>
@@ -29,10 +26,7 @@ function App() {
           <button
             className="show"
             onClick={() => {
-              setPokemons((previous) => [
-                ...previous,
-                ...createPokemons(previous.length + 1, 3),
-              ]);
+              setLimit((previous) => previous + 3);
             }}
           >
             Voir plus
@@ -45,10 +39,10 @@ function App() {
         <div className="list" ref={listRef}>
           {pokemons.map((pokemon) => (
             <PokemonItem
-              key={pokemon.id}
-              id={pokemon.id}
+              key={pokemon.name}
+              id={0}
               name={pokemon.name}
-              url={pokemon.url}
+              url={pokemon.name}
             />
           ))}
         </div>
