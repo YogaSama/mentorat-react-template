@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import PokemonItem from './PokemonItem';
 import usePokemons from './usePokemons';
+import { useShiny } from './ShinyProvider';
 
 function App() {
   const [limit, setLimit] = useState(3);
-  const [shiny, setShiny] = useState(false);
+  const { shiny, setShiny } = useShiny();
   const pokemons = usePokemons(limit);
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -39,7 +40,7 @@ function App() {
         </div>
         <div className="list" ref={listRef}>
           {pokemons.map((pokemon) => (
-            <PokemonItem key={pokemon.name} name={pokemon.name} shiny={shiny} />
+            <PokemonItem key={pokemon.name} name={pokemon.name} />
           ))}
         </div>
       </main>
