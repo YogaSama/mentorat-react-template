@@ -6,12 +6,15 @@ import { useShiny } from './ShinyProvider';
 function App() {
   const [limit, setLimit] = useState(3);
   const { shiny, setShiny } = useShiny();
-  const pokemons = usePokemons(limit);
+  const pokemonQuery = usePokemons(limit);
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    listRef.current?.scrollTo({ top: listRef.current.scrollHeight });
-  }, [pokemons]);
+    listRef.current?.scrollTo({
+      top: listRef.current.scrollHeight,
+      behavior: 'smooth',
+    });
+  }, [pokemonQuery]);
 
   return (
     <>
@@ -19,12 +22,13 @@ function App() {
       <main className="main">
         <div className="tools">
           <button
+            disabled={pokemonQuery.loading}
             className="show-more"
             onClick={() => {
               setLimit((previous) => previous + 3);
             }}
           >
-            Voir plus
+            {pokemonQuery.loading ? 'Loading...' : 'Voir plus'}
           </button>
           <div className="shiny">
             <label htmlFor="shiny-checkbox">shiny</label>
@@ -39,7 +43,7 @@ function App() {
           </div>
         </div>
         <div className="list" ref={listRef}>
-          {pokemons.map((pokemon) => (
+          {pokemonQuery.data.map((pokemon) => (
             <PokemonItem key={pokemon.name} name={pokemon.name} />
           ))}
         </div>

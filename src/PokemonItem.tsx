@@ -6,20 +6,21 @@ interface PokemonItemProps {
 }
 
 function PokemonItem(props: PokemonItemProps) {
-  const pokemon = usePokemon(props.name);
+  const pokemonQuery = usePokemon(props.name);
   const { shiny } = useShiny();
 
+  if (pokemonQuery.loading) {
+    return <div className="item">Loading ...</div>;
+  }
+
+  const pokemon = pokemonQuery.data!;
   return (
     <div className="item">
-      #{pokemon?.id ?? '-'} {props.name}
-      {pokemon?.sprites.front_default ? (
-        <img
-          className="icon"
-          src={pokemon.sprites[shiny ? 'front_shiny' : 'front_default']!}
-        />
-      ) : (
-        <div className="icon" />
-      )}
+      #{pokemon.id} {props.name}
+      <img
+        className="icon"
+        src={pokemon.sprites[shiny ? 'front_shiny' : 'front_default']!}
+      />
     </div>
   );
 }
