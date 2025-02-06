@@ -52,23 +52,21 @@ function App() {
             />
           </div>
         </div>
-        {pokemonQuery.error != null && (
-          <div className="error">Chargement impossible du pokedex</div>
-        )}
-        {pokemonQuery.data != null && (
-          <div className="list" ref={listRef}>
-            {pokemonQuery.data.map((pokemon) => (
-              <ErrorBoundary
-                key={pokemon.name}
-                fallback={<div className="item error">{pokemon.name}</div>}
-              >
-                <Suspense fallback={<div className="item">Loading ...</div>}>
-                  <PokemonItem name={pokemon.name} />
-                </Suspense>
-              </ErrorBoundary>
-            ))}
-          </div>
-        )}
+        <div className="list" ref={listRef}>
+          {pokemonQuery.error != null && (
+            <div className="error">Chargement impossible du pokedex</div>
+          )}
+          {pokemonQuery.data?.map((pokemon) => (
+            <ErrorBoundary
+              key={pokemon.name}
+              fallback={<div className="item error">{pokemon.name}</div>}
+            >
+              <Suspense fallback={<div className="item">Loading ...</div>}>
+                <PokemonItem name={pokemon.name} />
+              </Suspense>
+            </ErrorBoundary>
+          ))}
+        </div>
       </main>
     </>
   );
