@@ -2,7 +2,7 @@ import 'normalize.css';
 import './main.css';
 import './security.ts';
 import { createRoot } from 'react-dom/client';
-import App from './App.tsx';
+import Component from './Component.tsx';
 
 const rootElement = document.getElementById('root')!;
-createRoot(rootElement).render(<App />);
+createRoot(rootElement).render(<Component />);
