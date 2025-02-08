@@ -6,79 +6,107 @@ import { randomPokemonId } from './utils';
 function App() {
   const [id, setId] = useState<number>(() => randomPokemonId());
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
   const [state, setState] = useState<'run' | 'loose' | 'win'>('run');
   const [score, setScore] = useState<number>(0);
+  const [input, setInput] = useState<string>('');
 
   const nextRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Met la partie en état "run" quand l'ID du pokemon change.
+  useEffect(() => {
+    if (state === 'run') {
+      setInput('');
+      setId(randomPokemonId());
+    }
+  }, [state]);
+
+  //
   useEffect(() => {
     setPokemon(null);
-    setLoading(true);
     getPokemonById(id).then((data) => {
-      console.log(data.name); // <-- pour tricher.
+      console.log(id, data.name); // <-- pour tricher.
       setPokemon(data);
-      setLoading(false);
     });
   }, [id]);
 
   useEffect(() => {
     if (state !== 'run') {
       nextRef.current?.focus();
-    } else {
-      inputRef.current?.focus();
     }
   }, [state]);
+
+  useEffect(() => {
+    if (state === 'run' && pokemon !== null) {
+      inputRef.current?.focus();
+    }
+  }, [pokemon, state]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     event.stopPropagation();
 
-    const formData = new FormData(event.target as HTMLFormElement);
-    const input = formData.get('input')!.toString().toLowerCase();
-    const name = pokemon!.name.toLowerCase();
-    setState(input === name ? 'win' : 'loose');
+    const answer = input.toString().toLowerCase();
+    const name = pokemon?.name.toLowerCase();
+
+    if (answer === name) {
+      setState('win');
+      setScore((previous) => previous + 1);
+    } else {
+      setState('loose');
+    }
   };
 
   const handleNextClick: React.MouseEventHandler<HTMLButtonElement> = () => {
-    if (state === 'loose') {
-      setScore(0);
-    } else if (state === 'win') {
-      setScore((previous) => previous + 1);
-    }
     setState('run');
-    setId(randomPokemonId());
   };
 
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    setInput(event.target.value);
+  };
+
+  const icon = state === 'win' ? '✅' : '❌';
+
   return (
-    <main className="main">
-      <div className="score">Score: {score}</div>
-      <div className="icon">
-        <img
-          hidden={!pokemon}
-          src={pokemon?.sprites.front_default ?? undefined}
-          style={{ filter: `brightness(${state === 'run' ? 0 : 1})` }}
-        />
-      </div>
-      {state === 'run' && (
-        <form onSubmit={handleSubmit}>
-          <input
-            ref={inputRef}
-            type="text"
-            name="input"
-            placeholder={loading ? 'Loading...' : 'Pikachu'}
+    <>
+      <header>Pokeguess</header>
+      <main>
+        <div className="score">Score: {score}</div>
+        <div className="icon">
+          <img
+            hidden={!pokemon}
+            src={
+              pokemon?.sprites.versions['generation-iv'].platinum
+                .front_default ?? undefined
+            }
+            style={{ filter: `brightness(${state === 'run' ? 0 : 1})` }}
           />
-        </form>
-      )}
-      {state === 'win' && <div>✅ {pokemon?.name}</div>}
-      {state === 'loose' && <div>❌ {pokemon?.name}</div>}
-      {state !== 'run' && (
-        <button ref={nextRef} disabled={loading} onClick={handleNextClick}>
-          Next
-        </button>
-      )}
-    </main>
+        </div>
+        {state === 'run' && (
+          <form onSubmit={handleSubmit}>
+            <input
+              disabled={pokemon === null}
+              ref={inputRef}
+              type="text"
+              value={input}
+              onChange={handleInputChange}
+            />
+          </form>
+        )}
+        {state !== 'run' && (
+          <div className="button-group">
+            <div className="bold">
+              {icon} {pokemon?.name}
+            </div>
+            <button className="bold" ref={nextRef} onClick={handleNextClick}>
+              Rejouer
+            </button>
+          </div>
+        )}
+      </main>
+    </>
   );
 }
 

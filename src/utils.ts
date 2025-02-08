@@ -1,5 +1,5 @@
 export function randomPokemonId() {
-  return Math.round(random(0, 150));
+  return Math.floor(random(1, 494));
 }
 
 export function random(min: number, max: number) {
